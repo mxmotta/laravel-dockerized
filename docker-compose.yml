@@ -1,0 +1,48 @@
+---
+version: '2'
+services:
+  app:
+    depends_on:
+    - db
+    - redis
+    build: .
+    working_dir: /var/www/html
+    volumes:
+    - ./:/var/www/html
+    ports:
+    - '${APP_PORT:-3000}:80'
+
+  db:
+    image: postgres:alpine3.15
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'avlog'
+      POSTGRES_PASSWORD: 'avlog'
+      POSTGRES_DB: 'avlog'
+      PGDATA: /var/lib/postgresql/data
+    ports:
+        - 5432
+
+  pgadmin:
+    depends_on:
+    - db
+    image: dpage/pgadmin4
+    volumes: 
+        - ./pgadmin:/var/lib/pgadmin/storage
+    environment:
+        PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+        PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+        - "8081:80"
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+    - '${FORWARD_MAIL_PORT:-8025}:8025'
+    - 1025
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379
