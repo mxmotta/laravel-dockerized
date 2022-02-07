@@ -17,9 +17,9 @@ services:
     volumes:
       - ./db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: 'avlog'
-      POSTGRES_PASSWORD: 'avlog'
-      POSTGRES_DB: 'avlog'
+      POSTGRES_USER: 'application_username'
+      POSTGRES_PASSWORD: 'application_password'
+      POSTGRES_DB: 'application_database'
       PGDATA: /var/lib/postgresql/data
     ports:
         - 5432
@@ -30,6 +30,8 @@ services:
     image: dpage/pgadmin4
     volumes: 
         - ./pgadmin:/var/lib/pgadmin/storage
+        - ./environment/servers.json:/pgadmin4/servers.json # preconfigured servers/connections
+        - ./environment/pgpass:/pgpass # passwords for the connections in this file
     environment:
         PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
         PGADMIN_DEFAULT_PASSWORD: "admin"

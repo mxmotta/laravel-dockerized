@@ -13,6 +13,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-/db_data
-/pgadmin
-supervisor.*
+/db_data/*
+/pgadmin/*
+supervisor*
